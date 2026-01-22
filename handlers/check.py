@@ -24,7 +24,7 @@ async def check_prices_message(update: Update, context: ContextTypes.DEFAULT_TYP
         )
         return
     
-    message = await update.message.reply_text(
+    await update.message.reply_text(
         "🔍 Начинаю проверку цен...",
         reply_markup=get_main_keyboard()
     )
@@ -49,9 +49,10 @@ async def check_prices_message(update: Update, context: ContextTypes.DEFAULT_TYP
     else:
         response = "😔 Не удалось получить цены"
     
-    await message.edit_text(
+    await update.message.reply_text(
         response + f"\n\nПроверено маршрутов: {len(tracks)}",
-        parse_mode='HTML'
+        parse_mode='HTML',
+        reply_markup=get_main_keyboard()
     )
 
 # Функция для получения обработчика кнопки "Проверить цены"

@@ -64,12 +64,25 @@ class Database:
     
     def add_track(self, user_id: int, route: str, 
                   origin: Optional[str] = None, destination: Optional[str] = None) -> int:
-        """Добавляем маршрут для отслеживания"""
+        """Добавляем маршрут для отслеживания (с проверкой дубликатов)"""
         cursor = self.conn.cursor()
+        
+        # Проверяем, есть ли уже такой активный маршрут у пользователя
+        cursor.execute('''
+            SELECT id FROM tracks 
+            WHERE user_id = ? AND route = ? AND active = 1
+        ''', (user_id, route))
+        
+        existing = cursor.fetchone()
+        if existing:
+            return existing[0]  # Возвращаем ID существующего маршрута
+        
+        # Если дубликата нет - добавляем новый
         cursor.execute('''
             INSERT INTO tracks (user_id, route, origin, destination)
             VALUES (?, ?, ?, ?)
         ''', (user_id, route, origin, destination))
+        
         self.conn.commit()
         return cursor.lastrowid
     

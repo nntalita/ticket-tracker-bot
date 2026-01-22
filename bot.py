@@ -93,6 +93,9 @@ async def daily_check(context):
 def register_handlers(application):
     """Регистрация всех обработчиков команд и кнопок"""
     
+    # ВАЖНО: обработчик Отмена должен быть ПЕРВЫМ (до ConversationHandler)
+    application.add_handler(get_cancel_button_handler())    # ❌ Отмена
+    
     # Команды
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
@@ -105,13 +108,12 @@ def register_handlers(application):
     # ConversationHandler для добавления маршрута через кнопку
     application.add_handler(get_track_conversation_handler())
     
-    # Обработчики кнопок
+    # Обработчики кнопок (остальные)
     application.add_handler(get_list_button_handler())      # 📋 Мои маршруты
     application.add_handler(get_check_button_handler())     # 💰 Проверить цены
     application.add_handler(get_stats_button_handler())     # 📊 Статистика
     application.add_handler(get_help_button_handler())      # ❓ Помощь
     application.add_handler(get_delete_button_handler())    # ❌ Удалить маршрут
-    application.add_handler(get_cancel_button_handler())    # ❌ Отмена
 
 def main():
     """Главная функция запуска бота"""
