@@ -1,0 +1,9 @@
+venv/
+*.db
+*.log
+.env
+__pycache__/
+*.pyc
+config.py
+secrets/
+.DS_Store
