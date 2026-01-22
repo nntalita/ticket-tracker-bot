@@ -7,3 +7,5 @@ __pycache__/
 config.py
 secrets/
 .DS_Store
+# Cursor
+.cursorindexingignore
