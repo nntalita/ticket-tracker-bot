@@ -10,7 +10,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
 # Импорты из наших модулей
 from database import db
-from parser import parser
+from parser import get_price, get_available_routes, format_price_message, parser
 from keyboards import get_main_keyboard
 from utils.logger import setup_logger, setup_cleanup
 
@@ -52,7 +52,9 @@ async def daily_check(context):
                 
                 for track in tracks:
                     try:
-                        result = parser.check_route(track['route'])
+                        # ИСПРАВЛЕННАЯ СТРОКА: используем get_price вместо parser.check_route
+                        price = get_price(track['route'])
+                        result = {'success': True, 'price': price}
                         
                         if result['success'] and result['price']:
                             old_price = track['min_price']
